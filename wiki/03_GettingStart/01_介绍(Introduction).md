@@ -66,7 +66,6 @@
   - 2:添加```-pp```选项，给```CLASSPATH```变量正确设置```rt.jar```和```JAVA_HOME```
   - 3：(不推荐)使用```-aalow-phantom-refs```选项
   - 猜测：我没出现问题是不是1：Soot版本的提升；2：我使用的JDK是12；3：我设置了classpath环境变量...后面出现相关问题了，再琢磨这三个做法(逃
-<br>
 ### 1：第一个解决方案
 - 第一个选项，添加JDK中的```rt.jar```到Soot的classpath(不是JVM的classpath).这个JAR文件里面包含了```java.lang.Object```。
   ```
@@ -79,9 +78,7 @@
   Soot finished on Tue Feb 20 06:12:01 CET 2018
   Soot has run for 0 min. 1 sec.
   ```
-  <br>
 - 通过上面的输出，貌似是ok的，Soot成功的将两个.java文件处理了，并产生了两个.class文件，输出到sootOutput文件夹下。值得注意：通常，Soot将处理您在命令行上命名的所有类以及这些类引用的所有类。
-<br>
 - 再看下面这个常见的错误：
   ```
   $ java -cp sootclasses-trunk-jar-with-dependencies.jar soot.Main -cp .:~/bin/sun-jdk1.6.0_05/jre/lib/rt.jar A B
@@ -91,8 +88,6 @@
 - 这又是为啥？当你使用```~```的时候，```~```表达的含义是它代表你的主文件目录。但问题是 ```~```通常由shell扩展，在这种情况下不扩展。( but the problem is that usually ~ is expanded by the shell, but not in this case. )Soot将```~```字符串作为命令行选项获取，目前Soot无法将该字符串扩展为适合你的主目录的字符串。**所以需要在Soot的classpath中使用完整或相对路径**
 
 ### 2：第二个解决方案
-<br>
-
 - 第二个选项是使用```-pp```
   ```
   $ java -cp sootclasses-trunk-jar-with-dependencies.jar soot.Main -cp . -pp A B
@@ -108,10 +103,8 @@
   - 1：当前```CLASSPATH```变量的内容
   - 2：```${JAVA_HOME}/lib/rt.jar```
   - 3:如果使用了全程序模式(即启用了-w选项，以后还会有更多的功能)，那么它还会添加```${JAVA_HOME}/lib/jce.jar```
-<br>
 ### 3： 第三个解决方案
 - ```–allow-phantom-refs```
-<br>
 ```
 $ java -cp sootclasses-trunk-jar-with-dependencies.jar soot.Main -allow-phantom-refs -cp . A B
 Soot started on Tue Feb 20 06:15:39 CET 2018
@@ -126,7 +119,6 @@ Soot has run for 0 min. 0 sec.
   - 上述操作告诉Soot：我tm不想给你你现在没有的类(可能因为你没有这些类)但是你必须尽全力实现我要求的操作，即使没有这些类。
   - Soot为每一个无法解析的类都创建了一个"phantom class"，并告诉你相关情况。
   - 注意：这个方法非常有限，并且在许多情况下都无法获得所想要的结果，建议仅当自己知道自己在做什么的时候才使用这个选项。
-<br>
 - Windows用户注意事项：
   - Soot会正确处理驱动器号，在Windows中，路径分隔符必须为反斜杠，而不是正斜杠。 路径分隔符应为“;” （分号）代替“：”（冒号）。
 ## 处理整个目录
