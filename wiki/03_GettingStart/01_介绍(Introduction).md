@@ -48,7 +48,25 @@
 - 如果你使用的是JDK8(含不含以上？)，这些JAVA文件需要先编译，在它们作为命令行参数传递之前
   - ![](assets/markdown-img-paste-20191111213754357.png)
   - emmm，我这里是没问题的，wiki上面显示的是会有问题，原因是Soot 有自己的classpath
+- 这里有大问题！
+  -  报错,cannot find rt.jar
+  ```
+  D:\soottest>java -cp sootclasses-trunk-jar-with-dependencies.jar soot.Main A B
+  Soot started on Tue Nov 12 18:46:49 CST 2019
+  soot.SootResolver$SootClassNotFoundException: couldn't find class: A (is your soot-class-path set properly?)
+          at soot.SootResolver.bringToHierarchyUnchecked(SootResolver.java:232)
+          at soot.SootResolver.bringToHierarchy(SootResolver.java:214)
+          at soot.SootResolver.bringToSignatures(SootResolver.java:279)
+          at soot.SootResolver.processResolveWorklist(SootResolver.java:172)
+          at soot.SootResolver.resolveClass(SootResolver.java:134)
+          at soot.Scene.loadClass(Scene.java:942)
+          at soot.Scene.loadClassAndSupport(Scene.java:927)
+          at soot.Scene.loadNecessaryClass(Scene.java:1729)
+          at soot.Scene.loadNecessaryClasses(Scene.java:1741)
+          at soot.Main.run(Main.java:241)
+          at soot.Main.main(Main.java:141)
 
+  ```
 ## Soot自己的classpath
 - Soot有自己的classpath，并且只会从该路径上的JAR文件或目录中加载文件。<br>
 - 默认的，此路径是空的，因此wiki[上面的例子](https://github.com/Sable/soot/wiki/Introduction:-Soot-as-a-command-line-tool#soots-classpath)会出现*does not “see” the classes A and B*,那么下一步，就使用当前的目录"."即可
@@ -65,7 +83,6 @@
   - 1:添加 ```rt.jar```到classpath
   - 2:添加```-pp```选项，给```CLASSPATH```变量正确设置```rt.jar```和```JAVA_HOME```
   - 3：(不推荐)使用```-aalow-phantom-refs```选项
-  - 猜测：我没出现问题是不是1：Soot版本的提升；2：我使用的JDK是12；3：我设置了classpath环境变量...后面出现相关问题了，再琢磨这三个做法(逃
 ### 1：第一个解决方案
 - 第一个选项，添加JDK中的```rt.jar```到Soot的classpath(不是JVM的classpath).这个JAR文件里面包含了```java.lang.Object```。
   ```
