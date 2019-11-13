@@ -153,7 +153,9 @@ public class AndroidInstrument {
 对生成的Soot.apk反编译，并查看代码如下
 
   ![](assets/markdown-img-paste-20191113210652991.png)
-
+## 遇到的问题
+- 刚开始依照官网上的code走，发现不行，要不不输出，要么输出了一个1kb的dex文件
+  - 解决方案大概是：对比了博客上的代码，多初始化了几个参数```option.v()....```
 ## 参考博客
 https://blog.csdn.net/zlp1992/article/details/42463463
 https://blog.csdn.net/u010308400/article/details/50437739
