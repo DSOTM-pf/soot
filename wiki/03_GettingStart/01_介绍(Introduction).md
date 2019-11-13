@@ -116,8 +116,11 @@
   Soot finished on Tue Feb 20 06:13:52 CET 2018
   Soot has run for 0 min. 1 sec.
   ```
+  ```
+  java soot.Main -cp . -pp A
+  ```
 - 这个操作相比之前要添加classpath容易的多，当然，这正是使用此操作的原因。```-pp```代表"前置路径"，这意味着Soot自动将以下内容添加到自己的类路径里面
-  - 1：当前```CLASSPATH```变量的内容
+  - 1：当前```Cjava soot.Main -cp . -pp ALASSPATH```变量的内容
   - 2：```${JAVA_HOME}/lib/rt.jar```
   - 3:如果使用了全程序模式(即启用了-w选项，以后还会有更多的功能)，那么它还会添加```${JAVA_HOME}/lib/jce.jar```
 ### 3： 第三个解决方案
